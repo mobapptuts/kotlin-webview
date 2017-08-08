@@ -7,24 +7,7 @@
     android:orientation="vertical"
     tools:context="com.mobapptuts.kotlinwebview.MainActivity">
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/uriText"
-            android:text="@string/uri_default"
-            android:layout_weight=".70"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/sendButton"
-            android:text="@string/send_button"
-            android:layout_weight=".30"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <include layout="@layout/browser_toolbar" />
 
     <WebView
         android:id="@+id/webview"
