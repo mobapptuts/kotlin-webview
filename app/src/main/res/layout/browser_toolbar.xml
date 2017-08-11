@@ -22,7 +22,20 @@
             android:textColor="#ffffff"
             android:inputType="textUri"
             android:imeOptions="actionSend"
-            android:layout_width="match_parent"
+            android:layout_weight=".70"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/backButton"
+            android:src="@drawable/ic_arrow_back_white_48dp"
+            android:layout_weight=".15"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/forwardButton"
+            android:src="@drawable/ic_arrow_forward_white_48dp"
+            android:layout_weight=".15"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
 </android.support.v7.widget.Toolbar>
