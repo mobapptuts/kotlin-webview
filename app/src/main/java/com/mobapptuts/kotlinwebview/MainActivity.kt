@@ -30,6 +30,36 @@ class MainActivity : AppCompatActivity() {
         forwardButton.setOnClickListener {
             if(webview.canGoForward()) webview.goForward()
         }
+        backButton.setOnLongClickListener {
+            getBackHistory()
+            true
+        }
+        forwardButton.setOnLongClickListener {
+            getForwardHistory()
+            true
+        }
+    }
+
+    fun getBackHistory() : ArrayList<String> {
+        val webBackHistory = webview.copyBackForwardList()
+        val historyList = ArrayList<String>()
+
+        for (i in 0 until webBackHistory.currentIndex)
+            historyList.add(webBackHistory.getItemAtIndex(i).title)
+
+        historyList.reverse()
+        return historyList
+    }
+
+    fun getForwardHistory() : ArrayList<String> {
+        val webForwardHistory = webview.copyBackForwardList()
+        val historyList = ArrayList<String>()
+
+        for (i in 0 until webForwardHistory.size - webForwardHistory.currentIndex -1)
+            historyList.add(webForwardHistory.getItemAtIndex(
+                    webForwardHistory.currentIndex + i + 1
+            ).title)
+        return historyList
     }
 
     @Throws(UnsupportedOperationException::class)
@@ -41,7 +71,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadWebpage() {
-        webview.loadUrl("")
 
         // Enable javascript
         webview.settings.javaScriptEnabled = true
