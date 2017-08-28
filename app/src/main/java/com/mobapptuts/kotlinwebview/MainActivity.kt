@@ -31,13 +31,21 @@ class MainActivity : AppCompatActivity() {
             if(webview.canGoForward()) webview.goForward()
         }
         backButton.setOnLongClickListener {
-            getBackHistory()
+            getHistoryDialog(getBackHistory())
             true
         }
         forwardButton.setOnLongClickListener {
-            getForwardHistory()
+            getHistoryDialog(getForwardHistory())
             true
         }
+    }
+
+    fun getHistoryDialog(historyList: ArrayList<String>) {
+        val historyDialogFragment = HistoryDialogFragment()
+        val bundle = Bundle()
+        bundle.putStringArrayList(historyDialogFragment.history, historyList)
+        historyDialogFragment.arguments = bundle
+        historyDialogFragment.show(supportFragmentManager, "HistoryDialog")
     }
 
     fun getBackHistory() : ArrayList<String> {
