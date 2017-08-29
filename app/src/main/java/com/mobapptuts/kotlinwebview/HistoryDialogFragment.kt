@@ -2,6 +2,7 @@ package com.mobapptuts.kotlinwebview
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,13 +16,30 @@ import android.widget.Toast
 class HistoryDialogFragment : DialogFragment(){
     val history = "HISTORY"
 
+    interface WebHistory {
+        fun webpageSelected(webTitle: String)
+    }
+
+    lateinit var webHistory: WebHistory
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        try {
+            webHistory = context as WebHistory
+        } catch (e: ClassCastException) {
+            e.printStackTrace()
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
 
         val historyList = arguments.getStringArrayList(history).toTypedArray()
         val alertDialogBuilder = AlertDialog.Builder(activity)
                 .setItems(historyList, DialogInterface.OnClickListener { dialogInterface, i ->
-                    Toast.makeText(activity, historyList[i], Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(activity, historyList[i], Toast.LENGTH_SHORT).show()
+                    webHistory.webpageSelected(historyList[i])
                 })
         val dialog = alertDialogBuilder.create()
         val listView = dialog.listView

@@ -12,7 +12,16 @@ import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.browser_toolbar.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
+    override fun webpageSelected(webTitle: String) {
+        val webHistory = webview.copyBackForwardList()
+        for (i in 0 until webHistory.size) {
+            if (webHistory.getItemAtIndex(i).title.equals(webTitle)) {
+                webview.goBackOrForward(i - webHistory.currentIndex)
+                break
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
