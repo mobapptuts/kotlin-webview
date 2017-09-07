@@ -13,6 +13,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.browser_toolbar.*
 
 class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
+
+    override fun getWebView() = webview
+
+/*
     override fun webpageSelected(webTitle: String) {
         val webHistory = webview.copyBackForwardList()
         for (i in 0 until webHistory.size) {
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
             }
         }
     }
+*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,19 +45,19 @@ class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
             if(webview.canGoForward()) webview.goForward()
         }
         backButton.setOnLongClickListener {
-            getHistoryDialog(getBackHistory())
+            getHistoryDialog(getBackHistory(), true)
             true
         }
         forwardButton.setOnLongClickListener {
-            getHistoryDialog(getForwardHistory())
+            getHistoryDialog(getForwardHistory(), false)
             true
         }
     }
 
-    fun getHistoryDialog(historyList: ArrayList<String>) {
+    fun getHistoryDialog(historyList: ArrayList<String>, backAdapter: Boolean) {
         val historyDialogFragment = HistoryDialogFragment()
         val bundle = Bundle()
-        bundle.putStringArrayList(historyDialogFragment.history, historyList)
+        bundle.putBoolean(historyDialogFragment.selectBackAdapter, backAdapter)
         historyDialogFragment.arguments = bundle
         historyDialogFragment.show(supportFragmentManager, "HistoryDialog")
     }

@@ -8,16 +8,19 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.webkit.WebView
 import android.widget.Toast
 
 /**
  * Created by nigelhenshaw on 2017/08/28.
  */
 class HistoryDialogFragment : DialogFragment(){
-    val history = "HISTORY"
+    val selectBackAdapter = "SELECT_BACK_ADAPTER"
 
     interface WebHistory {
-        fun webpageSelected(webTitle: String)
+        fun getWebView(): WebView
     }
 
     lateinit var webHistory: WebHistory
@@ -35,17 +38,18 @@ class HistoryDialogFragment : DialogFragment(){
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
 
-        val historyList = arguments.getStringArrayList(history).toTypedArray()
+        val backAdapter = arguments.getBoolean(selectBackAdapter)
+        val recyclerView = RecyclerView(activity)
+        if (backAdapter) {
+            recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
+            recyclerView.adapter = BackHistoryAdapter(webHistory.getWebView())
+        } else {
+            recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            recyclerView.adapter = ForwardHistoryAdapter(webHistory.getWebView())
+        }
         val alertDialogBuilder = AlertDialog.Builder(activity)
-                .setItems(historyList, DialogInterface.OnClickListener { dialogInterface, i ->
-//                    Toast.makeText(activity, historyList[i], Toast.LENGTH_SHORT).show()
-                    webHistory.webpageSelected(historyList[i])
-                })
-        val dialog = alertDialogBuilder.create()
-        val listView = dialog.listView
-        listView.background = ColorDrawable(Color.LTGRAY)
-        listView.divider = ColorDrawable(Color.RED)
-        listView.dividerHeight = 2
-        return dialog
+                .setView(recyclerView)
+        return alertDialogBuilder.create()
+
     }
 }
