@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.webkit.WebView
@@ -42,11 +43,15 @@ class HistoryDialogFragment : DialogFragment(){
         val recyclerView = RecyclerView(activity)
         if (backAdapter) {
             recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
-            recyclerView.adapter = BackHistoryAdapter(webHistory.getWebView())
+            recyclerView.adapter = BackHistoryAdapter(this, webHistory.getWebView())
         } else {
             recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            recyclerView.adapter = ForwardHistoryAdapter(webHistory.getWebView())
+            recyclerView.adapter = ForwardHistoryAdapter(this, webHistory.getWebView())
         }
+        val itemDecoration = DividerItemDecoration(activity, LinearLayoutManager.VERTICAL)
+        itemDecoration.setDrawable(ColorDrawable(Color.RED))
+        recyclerView.addItemDecoration(itemDecoration)
+        recyclerView.background = ColorDrawable(Color.LTGRAY)
         val alertDialogBuilder = AlertDialog.Builder(activity)
                 .setView(recyclerView)
         return alertDialogBuilder.create()

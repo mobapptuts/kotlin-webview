@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.web_item_history.view.*
 /**
  * Created by nigelhenshaw on 2017/09/07.
  */
-class ForwardHistoryAdapter(val webview: WebView): RecyclerView.Adapter<ForwardHistoryAdapter.ViewHolder>() {
+class ForwardHistoryAdapter(val dialog: HistoryDialogFragment, val webview: WebView): RecyclerView.Adapter<ForwardHistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflator = LayoutInflater.from(parent.context)
@@ -24,6 +24,16 @@ class ForwardHistoryAdapter(val webview: WebView): RecyclerView.Adapter<ForwardH
         val webHistory = webview.copyBackForwardList()
         holder.title.text = webHistory.getItemAtIndex(webHistory.currentIndex + position + 1).title
         holder.favicon.setImageBitmap(webHistory.getItemAtIndex(webHistory.currentIndex + position + 1).favicon)
+
+        holder.itemView.setOnClickListener {
+            for (i in webHistory.currentIndex+1 until webHistory.size) {
+                if (holder.title.text.equals(webHistory.getItemAtIndex(i).title)) {
+                    webview.goBackOrForward(i - webHistory.currentIndex)
+                    dialog.dismiss()
+                    break
+                }
+            }
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
