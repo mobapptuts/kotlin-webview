@@ -45,43 +45,21 @@ class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
             if(webview.canGoForward()) webview.goForward()
         }
         backButton.setOnLongClickListener {
-            getHistoryDialog(getBackHistory(), true)
+            getHistoryDialog(true)
             true
         }
         forwardButton.setOnLongClickListener {
-            getHistoryDialog(getForwardHistory(), false)
+            getHistoryDialog(false)
             true
         }
     }
 
-    fun getHistoryDialog(historyList: ArrayList<String>, backAdapter: Boolean) {
+    fun getHistoryDialog(backAdapter: Boolean) {
         val historyDialogFragment = HistoryDialogFragment()
         val bundle = Bundle()
         bundle.putBoolean(historyDialogFragment.selectBackAdapter, backAdapter)
         historyDialogFragment.arguments = bundle
         historyDialogFragment.show(supportFragmentManager, "HistoryDialog")
-    }
-
-    fun getBackHistory() : ArrayList<String> {
-        val webBackHistory = webview.copyBackForwardList()
-        val historyList = ArrayList<String>()
-
-        for (i in 0 until webBackHistory.currentIndex)
-            historyList.add(webBackHistory.getItemAtIndex(i).title)
-
-        historyList.reverse()
-        return historyList
-    }
-
-    fun getForwardHistory() : ArrayList<String> {
-        val webForwardHistory = webview.copyBackForwardList()
-        val historyList = ArrayList<String>()
-
-        for (i in 0 until webForwardHistory.size - webForwardHistory.currentIndex -1)
-            historyList.add(webForwardHistory.getItemAtIndex(
-                    webForwardHistory.currentIndex + i + 1
-            ).title)
-        return historyList
     }
 
     @Throws(UnsupportedOperationException::class)
