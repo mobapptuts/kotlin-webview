@@ -9,11 +9,13 @@ import android.view.inputmethod.EditorInfo
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.browser_toolbar.*
 
 class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
 
+    lateinit var fullscreenView: View
     override fun getWebView() = webview
 
 /*
@@ -90,6 +92,25 @@ class MainActivity : AppCompatActivity(), HistoryDialogFragment.WebHistory {
                 super.onProgressChanged(view, newProgress)
 
                 pageLoadProgressBar.progress = newProgress
+            }
+
+            override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                super.onShowCustomView(view, callback)
+
+                if (view is FrameLayout) {
+                    fullscreenView = view
+                    fullscreenContainer.addView(fullscreenView)
+                    fullscreenContainer.visibility = View.VISIBLE
+                    mainContainer.visibility = View.GONE
+                }
+            }
+
+            override fun onHideCustomView() {
+                super.onHideCustomView()
+
+                fullscreenContainer.removeView(fullscreenView)
+                fullscreenContainer.visibility = View.GONE
+                mainContainer.visibility = View.VISIBLE
             }
         }
     }

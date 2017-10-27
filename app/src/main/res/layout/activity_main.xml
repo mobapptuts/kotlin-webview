@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.mobapptuts.kotlinwebview.MainActivity">
 
-    <include layout="@layout/browser_toolbar" />
+    <LinearLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/pageLoadProgressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <include layout="@layout/browser_toolbar" />
+
+        <ProgressBar
+            android:id="@+id/pageLoadProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <WebView
+            android:id="@+id/webview"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </WebView>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fullscreenContainer"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <WebView
-        android:id="@+id/webview"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </WebView>
-</LinearLayout>
+        android:layout_height="match_parent">
+    </FrameLayout>
+</FrameLayout>
